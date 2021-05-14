@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', sans-serif;
+  }
+  
+  .divHeader {
+    width: 100%;
+  }
+  
+  .divHeader .header {
+    height: 120px;
+    color: red;
+  }
+  
+  .divHeader .header ul {
+    padding-left: unset !important;
+  }
+  
+  .styleContenedor {
+    margin-top: 130px;
+    margin-bottom: 45px;
+  }
+  
+  .footer {
+    background-color: steelblue;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+  }
+
+  .modal .modal-body .imgHead {
+    max-width: 350px;
+  }
+
+  .modal .modal-body .row h2 {
+    color: orange;
+  }
+
+  .modal .modal-body .row h3 {
+    font-size: 20px;
+  }
