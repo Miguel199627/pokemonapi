@@ -1,14 +1,17 @@
 // Variable con la API a consumir
-// https://rickandmortyapi.com/
+// https://pokeapi.co/api/v2/
+const API = "https://pokeapi.co/api/v2/";
 
-const API = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=00";
+// Variables de apoyo
+let cantElem = "20";
+let dataElem = {};
 
 // Consumir API
 const getData = (API) => {
   return fetch(API)
     .then((response) => response.json())
     .then((json) => {
-      dibujarData(json.results), paginacion(json);
+      saveData(json.results), dibujarData(json.results), paginacion(json);
     })
     .catch((error) => {
       console.log("error: ", error);
@@ -16,7 +19,7 @@ const getData = (API) => {
 };
 
 const getInfoPk = (API) => {
-    return fetch(API)
+  return fetch(API)
     .then((response) => response.json())
     .then((json) => {
       showInfo(json, json.sprites, json.sprites.other.dream_world, json.sprites.other['official-artwork'].front_default);
@@ -94,11 +97,11 @@ const showInfo = ({ name, weight, height, stats }, imgs, dream_world, official_a
                         <h2>Mundo de sueños</h2>
                         <div class="col-lg-6">
                             <h2>Masculino</h2>
-                            ${ dream_world.front_default ? `<img src="${ dream_world.front_default }">` : "" }
+                            ${ dream_world.front_default ? `<img src="${ dream_world.front_default }" class="imgMunSue">` : "" }
                         </div>
                         <div class="col-lg-6">
                             <h2>Femenino</h2>
-                            ${ dream_world.front_female ? `<img src="${ dream_world.front_female }">` : "" }
+                            ${ dream_world.front_female ? `<img src="${ dream_world.front_female }" class="imgMunSue">` : "" }
                         </div>
                     </div>
                 </div>
@@ -110,20 +113,64 @@ const showInfo = ({ name, weight, height, stats }, imgs, dream_world, official_a
     </div>
     `;
     document.getElementById("modal").innerHTML = html;
-    let myModal = new bootstrap.Modal(document.getElementById('myModal'), { keyboard: false });
+    let myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
     myModal.show();
 };
 
 // Paginación
 const paginacion = (data) => {
-  let html = `<li class="page-item ${
-    data.previous ? "" : "disabled"
-  }"><a class="page-link" onclick="getData('${data.previous}')">Prev</a></li>
-    <li class="page-item ${
-      data.next ? "" : "disabled"
-    }"><a class="page-link" onclick="getData('${data.next}')">Next</a></li>`;
+  let html = `
+    <div class="col-lg-6">
+      <button class="btn btn-info ${ data.previous ? "" : "disabled" }" onclick="getData('${data.previous}')">Prev</button>
+      <button class="btn btn-info ${ data.next ? "" : "disabled" }" onclick="getData('${data.next}')">Next</button>
+      <label class="text-info"> Cantidad a traer:
+        <select id="cantShow" class="selCant">
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="500">500</option>
+        </select>
+      </label>
+    </div>
+    <div class="col-lg-6 text-light">
+      <input id="search" class="search" placeholder="Buscar Pokemon">
+      Cantidad de pokemones: ${ data.count }
+    </div>
+  `;
   document.getElementById("paginacion").innerHTML = html;
+  document.getElementById("cantShow").value = cantElem;
+  document.getElementById("search").addEventListener("keyup", (e) => searchf(e));
+  document.getElementById("cantShow").addEventListener("change", (e) => cantShowf(e));
 };
+
+const sppiner = () => {
+  let html = `
+    <div class="spinner-border mt-5" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  `;
+  document.getElementById("datosPk").innerHTML = html;
+}
+
+const cantShowf = (event) => {
+  sppiner();
+  cantElem = event.target.value;
+  getData(API + `pokemon?limit=${ event.target.value }&offset=00`);
+};
+
+const searchf = (event) => {
+  let pjsEncontrados = [];
+  dataElem.forEach(pj => {
+    if(pj.name.toLowerCase().indexOf(event.target.value) > -1) {
+      pjsEncontrados.push(pj);
+    }
+  });
+  dibujarData(pjsEncontrados);
+};
+
+const saveData = (data) => {
+  dataElem = data;
+}
 
 // Capitalizar solo la primera letra
 const capitalize = (texto) => {
@@ -131,4 +178,5 @@ const capitalize = (texto) => {
 };
 
 // Ejecutar getData
-getData(API);
+sppiner();
+getData(API + `pokemon?limit=${ cantElem }&offset=00`);

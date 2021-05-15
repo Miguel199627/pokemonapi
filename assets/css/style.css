@@ -12,6 +12,10 @@
     height: 120px;
     color: red;
   }
+
+  .divHeader .header .row img {
+    width: 70px;
+  }
   
   .divHeader .header ul {
     padding-left: unset !important;
@@ -19,14 +23,14 @@
   
   .styleContenedor {
     margin-top: 130px;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
   }
   
   .footer {
     background-color: steelblue;
     text-align: center;
     color: white;
-    font-size: 30px;
+    font-size: 25px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -43,4 +47,16 @@
 
   .modal .modal-body .row h3 {
     font-size: 20px;
+  }
+
+  .selCant {
+    height: 37px;
+  }
+
+  .search {
+    height: 37px;
+  }
+
+  .imgMunSue {
+    max-width: 250px;
   }
